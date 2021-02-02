@@ -1,0 +1,38 @@
+[
+  [
+    {
+      "Time": "2021-02-02",
+      "Starttime": 54383,
+      "Endtime": 57135,
+      "Project": "Z",
+      "Worked": "00:45:52"
+    }
+  ],
+  [
+    {
+      "Time": "2021-02-02",
+      "Starttime": 56164,
+      "Endtime": 57135,
+      "Project": "O",
+      "Worked": "00:16:11"
+    }
+  ],
+  [
+    {
+      "Time": "2021-02-02",
+      "Starttime": 57124,
+      "Endtime": 57135,
+      "Project": "U",
+      "Worked": "00:00:11"
+    }
+  ],
+  [
+    {
+      "Time": "2021-02-02",
+      "Starttime": 58118,
+      "Endtime": 180000,
+      "Project": "L",
+      "Worked": "09:51:22"
+    }
+  ]
+]

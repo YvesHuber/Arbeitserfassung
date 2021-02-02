@@ -1,0 +1,20 @@
+[
+  [
+    {
+      "Time": "2021-02-02",
+      "Starttime": 52586,
+      "Endtime": 55025,
+      "Project": "Z",
+      "Worked": 2439
+    }
+  ],
+  [
+    {
+      "Time": "2021-02-02",
+      "Starttime": 55015,
+      "Endtime": 55025,
+      "Project": "Z",
+      "Worked": 10
+    }
+  ]
+]
