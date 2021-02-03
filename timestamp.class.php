@@ -1,6 +1,7 @@
 
 <?php
 require_once('person.class.php');
+
 /**
  * Timestamp
  */
@@ -11,12 +12,11 @@ class Timestamp
     public $project;
 
 
+
     /**
      * __construct
-     *
-     * @param  mixed $start
-     * @param  mixed $end
-     * @param  mixed $project
+     *  constructor username has to be given
+     * @param  mixed $username
      * @return void
      */
     public function __construct($username)
@@ -29,9 +29,10 @@ class Timestamp
         $this->save = "Data/$this->user.Time.json";
     }
 
+
     /**
      * register_end
-     *
+     *  Registers the Endtime of the User that is logged in
      * @return void
      */
     public function register_end()
@@ -54,14 +55,15 @@ class Timestamp
         }
     }
 
+
     /**
      * Check
-     *
+     *  Checks which Function has to be called
      * @return void
      */
     function Check()
     {
-        if (file_exists($this->save)){
+        if (file_exists($this->save)) {
             $jsondecode = file_get_contents($this->save);
         }
 
@@ -91,7 +93,7 @@ class Timestamp
     public function register_start()
     {
 
-        echo "Started a New Action \n";
+        echo "Started a New Action ";
         $project = readline("On what project are you working on? ");
         $this->project = $project;
         date_default_timezone_set('Europe/Berlin');
@@ -101,7 +103,7 @@ class Timestamp
         $timeRN = $arrayt[0] + ($arrayt[1] * 60) + ($arrayt[2] * 60 * 60); //in seconds
 
         $dateRN = date('Y-m-d');
-        if (file_exists($this->save)){
+        if (file_exists($this->save)) {
             $json_already = file_get_contents($this->save);
         }
         $json = json_decode($json_already);
@@ -129,50 +131,50 @@ class Timestamp
      */
     public function calculate()
     {
-        $result = 0;
-        $jsondecode = file_get_contents($this->save);
-        $decoded = json_decode($jsondecode, true);
-        for ($i = 0; $i < count($decoded); $i++) {
+        if (file_get_contents($this->save)) {
+            $result = 0;
+            $jsondecode = file_get_contents($this->save);
+            $decoded = json_decode($jsondecode, true);
+            for ($i = 0; $i < count($decoded); $i++) {
 
 
-            if (($decoded)[$i][0]['Endtime'] == "") {
-                echo "The Project " . ($decoded)[$i][0]['Project'] . " isnt finished yet";
-                exit();
-            }
-            $result = ($decoded)[$i][0]['Endtime'] - ($decoded)[$i][0]['Starttime'];
-            if ($result > 43200) {
-                echo "You messed up logging out\n";
-                echo "You now have to enter your time manualy\n";
-                $manual = readline("Your Endtime in hh:mm ");
+                if (($decoded)[$i][0]['Endtime'] == "") {
+                    echo "The Project " . ($decoded)[$i][0]['Project'] . " isnt finished yet";
+                    exit();
+                }
+                $result = ($decoded)[$i][0]['Endtime'] - ($decoded)[$i][0]['Starttime'];
+                if ($result > 43200) {
+                    echo "You messed up logging out";
+                    echo "You now have to enter your time manualy";
+                    $manual = readline("Your Endtime in hh:mm ");
 
-                sscanf($manual, "%d:%d:%d", $hours, $minutes, $seconds);
+                    sscanf($manual, "%d:%d:%d", $hours, $minutes, $seconds);
 
-                $manuals = isset($hours) ? $hours * 3600 + $minutes * 60 + $seconds : $minutes * 60 + $seconds;
-                echo $manuals;
+                    $manuals = isset($hours) ? $hours * 3600 + $minutes * 60 + $seconds : $minutes * 60 + $seconds;
+                    echo $manuals;
 
+                    $jsondecode = file_get_contents($this->save);
+                    $decoded = json_decode($jsondecode, true);
+                    $decoded[$i][0]['Endtime'] = $manuals;
+                    $encoded = json_encode($decoded);
+                    file_put_contents($this->save, $encoded);
+                }
                 $jsondecode = file_get_contents($this->save);
                 $decoded = json_decode($jsondecode, true);
-                $decoded[$i][0]['Endtime'] = $manuals;
+                $Zeit = gmdate("H:i:s", $result);
+
+                $decoded[$i][0]['Worked'] = $Zeit;
                 $encoded = json_encode($decoded);
                 file_put_contents($this->save, $encoded);
 
-
+                if (($decoded)[$i][0]['Endtime'] != "") {
+                    $diff =  28415 - $result;
+                    $difft = gmdate("H:i:s", $diff);
+                    echo "you have to work for " . $difft . " on Project " . ($decoded)[$i][0]['Project'];
+                }
             }
-            $jsondecode = file_get_contents($this->save);
-            $decoded = json_decode($jsondecode, true);
-            $Zeit = gmdate("H:i:s", $result);
-
-            $decoded[$i][0]['Worked'] = $Zeit;
-            $encoded = json_encode($decoded);
-            file_put_contents($this->save, $encoded);
-
-            if (($decoded)[$i][0]['Endtime'] != ""){
-                $diff =  28415 - $result;
-                $difft = gmdate("H:i:s",$diff);
-                echo "you have to work for " . $difft . " on Project " . ($decoded)[$i][0]['Project'] . " \n";
-                
-            }
-
+        } else {
+            echo "There is no Time registerd for this user ";
         }
     }
 }
