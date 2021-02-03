@@ -17,7 +17,7 @@ class Person
     {
         $this->firstname = $firstname;
         $this->name = $name;
-        $this->save = "D:/Dokumente/010_Zli/002_Projekte/Arbeitszeitberechnung/Data/Data.json";
+        $this->save = "D:/Dokumente/010_Zli/002_Projekte/Arbeitszeitberechnung/Arbeitserfassung/Data/Data.json";
     }
 
     /**
@@ -28,8 +28,8 @@ class Person
     public function insert_values()
     {
 
-        $firstname = readline("geben Sie ihren Namen ein ");
-        $name = readline("geben Sie ihren Nachnamen ein ");
+        $firstname = readline("Enter your firstname ");
+        $name = readline("Enter your Lastname ");
         $this->firstname = $firstname;
         $this->name = $name;
         
@@ -69,7 +69,7 @@ class Person
     public function compare_values($firstnametry)
     {
         
-        $lastnametry = readline("\nLastname ");
+        $lastnametry = readline("Please enter your lastname \n");
 
         $json = file_get_contents($this->save);
         $decoded = json_decode($json,true);
@@ -78,7 +78,7 @@ class Person
         {
             if($firstnametry == ($decoded)[$i][0]['firstname'] && $lastnametry == ($decoded)[$i][0]['name'])
             {
-                echo "Logged in \n";
+                echo "You are now logged in Welcome " . $firstnametry . "\n";
                 return true;
             }
         }

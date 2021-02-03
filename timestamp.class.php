@@ -1,5 +1,9 @@
+
 <?php
 require_once('person.class.php');
+/**
+ * Timestamp
+ */
 class Timestamp
 {
     public $start;
@@ -22,7 +26,7 @@ class Timestamp
         $this->end = $end;
         $this->project = $project;*/
         $this->user = $username;
-        $this->save = "D:/Dokumente/010_Zli/002_Projekte/Arbeitszeitberechnung/Data/$this->user.Time.json";
+        $this->save = "D:/Dokumente/010_Zli/002_Projekte/Arbeitszeitberechnung/Arbeitserfassung/Data/$this->user.Time.json";
     }
 
     /**
@@ -32,7 +36,7 @@ class Timestamp
      */
     public function register_end()
     {
-        echo "end";
+        echo "Ended the Action ";
         date_default_timezone_set('Europe/Berlin');
         //Array that keeps the localtime 
         $arrayt = localtime();
@@ -77,14 +81,15 @@ class Timestamp
 
     /**
      * register_start
-     *
+     *  Registers the starttime from your localtime
+     * 
      * @return void
      */
     public function register_start()
     {
 
-        echo "start";
-        $project = readline("On what are you working on? ");
+        echo "Started a New Action \n";
+        $project = readline("On what project are you working on? ");
         $this->project = $project;
         date_default_timezone_set('Europe/Berlin');
         //Array that keeps the localtime 
@@ -114,7 +119,7 @@ class Timestamp
 
     /**
      * calculate
-     *
+     * calculates the worktime and gives an Error if the difference is too big
      * @return void
      */
     public function calculate()
@@ -138,12 +143,15 @@ class Timestamp
                 sscanf($manual, "%d:%d:%d", $hours, $minutes, $seconds);
 
                 $manuals = isset($hours) ? $hours * 3600 + $minutes * 60 + $seconds : $minutes * 60 + $seconds;
+                echo $manuals;
 
                 $jsondecode = file_get_contents($this->save);
                 $decoded = json_decode($jsondecode, true);
-                $decoded[$i][0]['Worked'] = $manuals;
+                $decoded[$i][0]['Endtime'] = $manuals;
                 $encoded = json_encode($decoded);
                 file_put_contents($this->save, $encoded);
+
+
             }
             $jsondecode = file_get_contents($this->save);
             $decoded = json_decode($jsondecode, true);
@@ -153,7 +161,13 @@ class Timestamp
             $encoded = json_encode($decoded);
             file_put_contents($this->save, $encoded);
 
-            echo "Time Worked on project " . ($decoded)[$i][0]['Project'] . " " . $Zeit . "\n";
+            if (($decoded)[$i][0]['Endtime'] != ""){
+                $diff =  28415 - $result;
+                $difft = gmdate("H:i:s",$diff);
+                echo "you have to work for " . $difft . " on Project " . ($decoded)[$i][0]['Project'] . " \n";
+                
+            }
+
         }
     }
 }
