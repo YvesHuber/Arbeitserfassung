@@ -17,7 +17,7 @@ class Person
     {
         $this->firstname = $firstname;
         $this->name = $name;
-        $this->save = "D:/Dokumente/010_Zli/002_Projekte/Arbeitszeitberechnung/Arbeitserfassung/Data/Data.json";
+        $this->save = "Data/Data.json";
     }
 
     /**
@@ -32,8 +32,9 @@ class Person
         $name = readline("Enter your Lastname ");
         $this->firstname = $firstname;
         $this->name = $name;
-        
+        if (file_exists($this->save)) {
         $json_already = file_get_contents($this->save);
+        }
         $json = json_decode($json_already);
 
         $array[] = array(
@@ -47,6 +48,9 @@ class Person
         $json_decoded = json_encode($json);
 
         file_put_contents($this->save, $json_decoded);
+        echo "
+        Registerd new user
+        ";
     }
 
     /**
@@ -70,8 +74,9 @@ class Person
     {
         
         $lastnametry = readline("Please enter your lastname \n");
-
+        if(file_exists($this->save)) {
         $json = file_get_contents($this->save);
+        }
         $decoded = json_decode($json,true);
 
         for($i = 0; $i < count($decoded); $i++)

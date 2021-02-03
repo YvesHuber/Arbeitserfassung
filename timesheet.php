@@ -1,12 +1,22 @@
 <?php
 require_once('person.class.php');
 require_once('timestamp.class.php');
-
+$user = new Person("", "");
+if (!file_exists('Data/')) {
+    mkdir('Data/', 0777, true);
+}
+if (!file_exists('Data/Data.json'))
+{
+    echo "
+You have no existing User
+Please create a new one
+        ";
+        $user->insert_values();
+}
 echo "
 Welcome \n
 Please Log in\n
 ";
-$user = new Person("", "");
 $firstnametry = readline("Please enter your Firstname to log in ");
 $check = $user->compare_values($firstnametry);
 

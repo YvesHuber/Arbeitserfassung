@@ -26,7 +26,7 @@ class Timestamp
         $this->end = $end;
         $this->project = $project;*/
         $this->user = $username;
-        $this->save = "D:/Dokumente/010_Zli/002_Projekte/Arbeitszeitberechnung/Arbeitserfassung/Data/$this->user.Time.json";
+        $this->save = "Data/$this->user.Time.json";
     }
 
     /**
@@ -61,7 +61,10 @@ class Timestamp
      */
     function Check()
     {
-        $jsondecode = file_get_contents($this->save);
+        if (file_exists($this->save)){
+            $jsondecode = file_get_contents($this->save);
+        }
+
         $decoded = json_decode($jsondecode, true);
         if ($decoded == NULL) {
             $this->register_start();
@@ -98,7 +101,9 @@ class Timestamp
         $timeRN = $arrayt[0] + ($arrayt[1] * 60) + ($arrayt[2] * 60 * 60); //in seconds
 
         $dateRN = date('Y-m-d');
-        $json_already = file_get_contents($this->save);
+        if (file_exists($this->save)){
+            $json_already = file_get_contents($this->save);
+        }
         $json = json_decode($json_already);
 
         $array[] = array(
